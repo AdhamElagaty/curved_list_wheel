@@ -1,10 +1,18 @@
 name: curved_list_wheel
-description: "A new Flutter package project."
+description: "A highly customizable Flutter list wheel widget that scrolls items along a curved path, allowing for advanced animations and layouts."
 version: 0.0.1
-homepage:
+homepage: https://github.com/adhamelagaty/curved_list_wheel
+repository: https://github.com/adhamelagaty/curved_list_wheel
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
 
 environment:
-  sdk: ^3.8.1
+  sdk: '>=3.0.0 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
@@ -52,3 +60,14 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/to/font-from-package
+
+keywords:
+- curved-list
+- list-wheel
+- picker
+- wheel-scroll
+- custom-list
+- scroll-effect
+- animation
+- onboarding
+- listview
