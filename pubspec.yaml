@@ -60,3 +60,14 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/to/font-from-package
+
+keywords:
+- curved-list
+- list-wheel
+- picker
+- wheel-scroll
+- custom-list
+- scroll-effect
+- animation
+- onboarding
+- listview
