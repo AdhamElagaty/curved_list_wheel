@@ -34,7 +34,7 @@ class CurvedListWheelTextItem extends StatelessWidget {
     } else if (style.distanceSpecificStyles.containsKey(itemState.distance)) {
       effectiveStyle = style.distanceSpecificStyles[itemState.distance]!;
     }
-    
+
     return AnimatedDefaultTextStyle(
       duration: const Duration(milliseconds: 150),
       style: effectiveStyle,
