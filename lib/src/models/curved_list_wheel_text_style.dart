@@ -15,6 +15,7 @@ class CurvedListWheelTextStyle {
   /// and the value is the [TextStyle] to apply.
   final Map<int, TextStyle> distanceSpecificStyles;
 
+  /// Creates a text styling configuration for items in the [CurvedListWheel].
   const CurvedListWheelTextStyle({
     this.selectedStyle = const TextStyle(
       fontSize: 48,
