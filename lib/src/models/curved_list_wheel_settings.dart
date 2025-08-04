@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'haptic_feedback_intensity.dart';
+
 /// Settings to configure the appearance and behavior of the CurvedListWheel.
 class CurvedListWheelSettings {
   /// The fixed extent of each item in the wheel, measured along the scroll axis.
@@ -32,6 +34,15 @@ class CurvedListWheelSettings {
   /// The border radius of the highlight box.
   final BorderRadius? highlightBorderRadius;
 
+  /// Whether to trigger haptic feedback when an item is selected.
+  /// Defaults to `true`.
+  final bool enableHapticFeedback;
+
+  /// The intensity of the haptic feedback.
+  /// Defaults to [HapticFeedbackIntensity.medium].
+  final HapticFeedbackIntensity hapticFeedbackIntensity;
+
+  /// Creates a configuration object for the [CurvedListWheel].
   const CurvedListWheelSettings({
     this.itemExtent = 65.0,
     this.pathCurveFactor = 0.7,
@@ -40,5 +51,7 @@ class CurvedListWheelSettings {
     this.highlightWidthFactor = 0.7,
     this.highlightHeightFactor,
     this.highlightBorderRadius,
+    this.enableHapticFeedback = true,
+    this.hapticFeedbackIntensity = HapticFeedbackIntensity.medium,
   });
 }
