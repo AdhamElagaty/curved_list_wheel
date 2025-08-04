@@ -29,6 +29,7 @@
 - [Quick Start: Basic Usage](#-quick-start-basic-usage)
 - [Deep Dive: Customization](#-deep-dive-customization)
   - [⚙️ Wheel Geometry & Feel (`CurvedListWheelSettings`)](#️-wheel-geometry--feel-curvedlistwheelsettings)
+  - [📳 Haptic Feedback](#-haptic-feedback)
   - [🎨 Styling Items (`itemBuilder` & `CurvedListItemState`)](#-styling-items-itembuilder--curvedlistitemstate)
     - [Using `CurvedListWheelTextItem` Helper](#using-curvedlistwheeltextitem-helper)
     - [Building Custom Widgets](#building-custom-widgets)
@@ -43,6 +44,7 @@
 ## 🌟 Features
 
 -   **Beautiful Curved Path Scrolling**: Items animate along a quadratic Bézier curve.
+-   **Haptic Feedback**: Built-in support for haptic feedback on item selection with customizable intensity.
 -   **Multi-Axis Support**: Configure the curve on the `left`, `right`, `top`, or `bottom`.
 -   **State-Driven UI**: `itemBuilder` provides `CurvedListItemState` (`isSelected`, `distance`) for powerful conditional styling and animations.
 -   **Infinite Scrolling**: Loop the list indefinitely for continuous picking.
@@ -57,7 +59,7 @@ Add the package to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  curved_list_wheel: ^1.0.0 # Check pub.dev for the latest version
+  curved_list_wheel: ^1.1.0 # Check pub.dev for the latest version
 ```
 
 Then, install it by running the command in your terminal:
@@ -143,6 +145,28 @@ CurvedListWheel(
 | `highlightWidthFactor`    | The highlight box's width as a fraction of the available cross-axis space.  |
 | `highlightHeightFactor`   | The highlight box's height (for horizontal wheels). Defaults to width factor. |
 | `highlightBorderRadius`   | The border radius of the highlight box.                                     |
+
+### 📳 Haptic Feedback
+
+Improve the user experience with tactile feedback. The wheel can produce a haptic response each time a new item is selected. This is also configured in `CurvedListWheelSettings`.
+
+```dart
+final settings = CurvedListWheelSettings(
+    // ... other settings
+    enableHapticFeedback: true,
+    hapticFeedbackIntensity: HapticFeedbackIntensity.heavy,
+);
+
+CurvedListWheel(
+    // ...
+    settings: settings,
+);
+```
+
+| Property                  | Description                                                                 |
+| ------------------------- | --------------------------------------------------------------------------- |
+| `enableHapticFeedback`    | Set to `true` to enable haptic feedback. Defaults to `true`.                |
+| `hapticFeedbackIntensity` | Controls the strength of the feedback. Options include `.light`, `.medium`, `.heavy`, `.selection`, and `.vibrate`. |
 
 ### 🎨 Styling Items (`itemBuilder` & `CurvedListItemState`)
 
@@ -267,6 +291,7 @@ This screen demonstrates:
 | `CurvedListItemState`         | Provides state (`isSelected`, `distance`) to the `itemBuilder` for conditional styling.                 |
 | `CurvedListWheelSettings`     | Configures the visual appearance and geometry of the wheel (item extent, curve, highlight).             |
 | `CurvedListWheelSide`         | Enum to define the curve's position and scroll axis (`left`, `right`, `top`, `bottom`).               |
+| `HapticFeedbackIntensity`     | Enum to define the haptic feedback strength on selection.                                               |
 | `CurvedListWheelTextItem`     | A helper widget for displaying text that reacts to `CurvedListItemState`.                               |
 | `CurvedListWheelTextStyle`    | A theme object to define styles for `CurvedListWheelTextItem` based on selection and distance.          |
 
