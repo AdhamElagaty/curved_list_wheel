@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'models/curved_list_item_state.dart';
 import 'models/curved_list_wheel_settings.dart';
 import 'models/curved_list_wheel_side.dart';
+import 'models/haptic_feedback_intensity.dart';
 
 /// A highly customizable list wheel widget that scrolls items along a curved path.
 ///
@@ -136,7 +138,6 @@ class CurvedListWheel<T> extends StatefulWidget {
   State<CurvedListWheel<T>> createState() => _CurvedListWheelState<T>();
 }
 
-
 class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
   late FixedExtentScrollController _scrollController;
   double _scrollOffset = 0.0;
@@ -149,9 +150,10 @@ class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = (widget.initialItem >= 0 && widget.initialItem < widget.items.length)
-        ? widget.initialItem
-        : 0;
+    _selectedIndex =
+        (widget.initialItem >= 0 && widget.initialItem < widget.items.length)
+            ? widget.initialItem
+            : 0;
     _scrollController = widget.controller ??
         FixedExtentScrollController(initialItem: _selectedIndex);
 
@@ -185,7 +187,7 @@ class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
     }
     super.dispose();
   }
-  
+
   double _calculateCurveDisplacement(double t, double crossAxisExtent) {
     final double p0 = -crossAxisExtent * widget.settings.pathCurveFactor;
     final double p1 = crossAxisExtent * widget.settings.pathCurveFactor;
@@ -194,43 +196,78 @@ class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
     return math.pow(1 - t, 2) * p0 + 2 * (1 - t) * t * p1 + math.pow(t, 2) * p2;
   }
 
+  void _triggerHapticFeedback() {
+    if (!widget.settings.enableHapticFeedback) {
+      return;
+    }
+    switch (widget.settings.hapticFeedbackIntensity) {
+      case HapticFeedbackIntensity.light:
+        HapticFeedback.lightImpact();
+        break;
+      case HapticFeedbackIntensity.medium:
+        HapticFeedback.mediumImpact();
+        break;
+      case HapticFeedbackIntensity.heavy:
+        HapticFeedback.heavyImpact();
+        break;
+      case HapticFeedbackIntensity.selection:
+        HapticFeedback.selectionClick();
+        break;
+      case HapticFeedbackIntensity.vibrate:
+        HapticFeedback.vibrate();
+        break;
+      case HapticFeedbackIntensity.none:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final double availableWidth = constraints.maxWidth;
         final double availableHeight = constraints.maxHeight;
-   
+
         final double highlightBoxMainExtent = widget.settings.itemExtent * 1.1;
 
         final double highlightBoxCrossExtent;
         if (_isHorizontal) {
-          final factor = widget.settings.highlightHeightFactor ?? widget.settings.highlightWidthFactor;
+          final factor = widget.settings.highlightHeightFactor ??
+              widget.settings.highlightWidthFactor;
           highlightBoxCrossExtent = availableHeight * factor;
         } else {
-          highlightBoxCrossExtent = availableWidth * widget.settings.highlightWidthFactor;
+          highlightBoxCrossExtent =
+              availableWidth * widget.settings.highlightWidthFactor;
         }
-        final double highlightBoxWidth = _isHorizontal ? highlightBoxMainExtent : highlightBoxCrossExtent;
-        final double highlightBoxHeight = _isHorizontal ? highlightBoxCrossExtent : highlightBoxMainExtent;
-        final double crossAxisExtent = _isHorizontal ? availableHeight : availableWidth;
-        double curveCenterDisplacement = _calculateCurveDisplacement(0.5, crossAxisExtent);
-        if (widget.side == CurvedListWheelSide.right || widget.side == CurvedListWheelSide.bottom) {
+        final double highlightBoxWidth =
+            _isHorizontal ? highlightBoxMainExtent : highlightBoxCrossExtent;
+        final double highlightBoxHeight =
+            _isHorizontal ? highlightBoxCrossExtent : highlightBoxMainExtent;
+        final double crossAxisExtent =
+            _isHorizontal ? availableHeight : availableWidth;
+        double curveCenterDisplacement =
+            _calculateCurveDisplacement(0.5, crossAxisExtent);
+        if (widget.side == CurvedListWheelSide.right ||
+            widget.side == CurvedListWheelSide.bottom) {
           curveCenterDisplacement *= -1;
         }
-        
+
         double highlightBoxLeft, highlightBoxTop;
         if (_isHorizontal) {
-            highlightBoxLeft = (availableWidth / 2.0) - (highlightBoxWidth / 2.0);
-            final double stackCenterY = availableHeight / 2.0;
-            final double highlightBoxCenterY = stackCenterY + curveCenterDisplacement;
-            highlightBoxTop = highlightBoxCenterY - (highlightBoxHeight / 2.0);
+          highlightBoxLeft = (availableWidth / 2.0) - (highlightBoxWidth / 2.0);
+          final double stackCenterY = availableHeight / 2.0;
+          final double highlightBoxCenterY =
+              stackCenterY + curveCenterDisplacement;
+          highlightBoxTop = highlightBoxCenterY - (highlightBoxHeight / 2.0);
         } else {
-            highlightBoxTop = (availableHeight / 2.0) - (highlightBoxHeight / 2.0);
-            final double stackCenterX = availableWidth / 2.0;
-            final double highlightBoxCenterX = stackCenterX + curveCenterDisplacement;
-            highlightBoxLeft = highlightBoxCenterX - (highlightBoxWidth / 2.0);
+          highlightBoxTop =
+              (availableHeight / 2.0) - (highlightBoxHeight / 2.0);
+          final double stackCenterX = availableWidth / 2.0;
+          final double highlightBoxCenterX =
+              stackCenterX + curveCenterDisplacement;
+          highlightBoxLeft = highlightBoxCenterX - (highlightBoxWidth / 2.0);
         }
-        
+
         final listWheel = ListWheelScrollView.useDelegate(
           controller: _scrollController,
           itemExtent: widget.settings.itemExtent,
@@ -240,6 +277,11 @@ class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
 
             final int effectiveIndex =
                 widget.isInfinite ? index % widget.items.length : index;
+
+            if (_selectedIndex == effectiveIndex) return;
+
+            _triggerHapticFeedback();
+
             setState(() {
               _selectedIndex = effectiveIndex;
             });
@@ -247,7 +289,7 @@ class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
           },
           childDelegate: _buildItemDelegate(constraints),
         );
-        
+
         return Stack(
           alignment: Alignment.center,
           children: [
@@ -293,17 +335,24 @@ class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
         final int effectiveIndex =
             widget.isInfinite ? index % widget.items.length : index;
 
-        final double scrollAxisExtent = _isHorizontal ? constraints.maxWidth : constraints.maxHeight;
-        final double crossAxisExtent = _isHorizontal ? constraints.maxHeight : constraints.maxWidth;
+        final double scrollAxisExtent =
+            _isHorizontal ? constraints.maxWidth : constraints.maxHeight;
+        final double crossAxisExtent =
+            _isHorizontal ? constraints.maxHeight : constraints.maxWidth;
 
         final itemPositionOnScrollAxis = index * widget.settings.itemExtent;
-        final relativePositionOnScrollAxis = itemPositionOnScrollAxis - _scrollOffset;
+        final relativePositionOnScrollAxis =
+            itemPositionOnScrollAxis - _scrollOffset;
 
-        final double t = (relativePositionOnScrollAxis / (scrollAxisExtent / 2.0) + 1.0) / 2.0;
+        final double t =
+            (relativePositionOnScrollAxis / (scrollAxisExtent / 2.0) + 1.0) /
+                2.0;
 
-        double displacement = _calculateCurveDisplacement(t.clamp(0.0, 1.0), crossAxisExtent);
+        double displacement =
+            _calculateCurveDisplacement(t.clamp(0.0, 1.0), crossAxisExtent);
 
-        if (widget.side == CurvedListWheelSide.right || widget.side == CurvedListWheelSide.bottom) {
+        if (widget.side == CurvedListWheelSide.right ||
+            widget.side == CurvedListWheelSide.bottom) {
           displacement *= -1;
         }
 
@@ -317,7 +366,8 @@ class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
           distance = (index - _selectedIndex).abs();
         }
 
-        final itemState = CurvedListItemState(isSelected: isSelected, distance: distance);
+        final itemState =
+            CurvedListItemState(isSelected: isSelected, distance: distance);
 
         final child = widget.itemBuilder(
           context,
@@ -326,15 +376,14 @@ class _CurvedListWheelState<T> extends State<CurvedListWheel<T>> {
           itemState,
         );
 
-        final Offset transformOffset = _isHorizontal
-            ? Offset(0, displacement)
-            : Offset(displacement, 0);
+        final Offset transformOffset =
+            _isHorizontal ? Offset(0, displacement) : Offset(displacement, 0);
 
         Widget transformedChild = Transform.translate(
           offset: transformOffset,
           child: Center(child: child),
         );
-        
+
         if (_isHorizontal) {
           transformedChild = RotatedBox(
             quarterTurns: -1,
