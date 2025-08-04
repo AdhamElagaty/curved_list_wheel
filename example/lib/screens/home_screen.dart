@@ -21,23 +21,29 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ElevatedButton(
-                style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16)),
+                style:
+                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(16)),
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const TextExampleScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const TextExampleScreen()),
                   );
                 },
-                child: const Text('Simple Text Example', style: TextStyle(fontSize: 16)),
+                child: const Text('Simple Text Example',
+                    style: TextStyle(fontSize: 16)),
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16)),
+                style:
+                    ElevatedButton.styleFrom(padding: const EdgeInsets.all(16)),
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const WidgetExampleScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const WidgetExampleScreen()),
                   );
                 },
-                child: const Text('Custom Widget Example', style: TextStyle(fontSize: 16)),
+                child: const Text('Custom Widget Example',
+                    style: TextStyle(fontSize: 16)),
               ),
               const SizedBox(height: 24),
               ElevatedButton(
@@ -48,10 +54,13 @@ class HomeScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const AdvancedYearBoardingExampleScreen()),
+                    MaterialPageRoute(
+                        builder: (_) =>
+                            const AdvancedYearBoardingExampleScreen()),
                   );
                 },
-                child: const Text('Advanced Onboarding Example', style: TextStyle(fontSize: 16)),
+                child: const Text('Advanced Onboarding Example',
+                    style: TextStyle(fontSize: 16)),
               ),
             ],
           ),
