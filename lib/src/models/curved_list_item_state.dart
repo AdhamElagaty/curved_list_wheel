@@ -8,6 +8,7 @@ class CurvedListItemState {
   /// `0` if selected, `1` for immediate neighbors, `2` for the next, and so on.
   final int distance;
 
+  /// Creates a new state for an item in the [CurvedListWheel].
   const CurvedListItemState({
     required this.isSelected,
     required this.distance,

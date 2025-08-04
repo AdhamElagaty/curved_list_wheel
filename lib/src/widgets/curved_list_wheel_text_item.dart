@@ -17,6 +17,7 @@ class CurvedListWheelTextItem extends StatelessWidget {
   /// The styling configuration for the text.
   final CurvedListWheelTextStyle style;
 
+  /// Creates a helper widget for displaying styled text in a [CurvedListWheel].
   const CurvedListWheelTextItem({
     super.key,
     required this.text,
@@ -33,7 +34,7 @@ class CurvedListWheelTextItem extends StatelessWidget {
     } else if (style.distanceSpecificStyles.containsKey(itemState.distance)) {
       effectiveStyle = style.distanceSpecificStyles[itemState.distance]!;
     }
-    
+
     return AnimatedDefaultTextStyle(
       duration: const Duration(milliseconds: 150),
       style: effectiveStyle,

@@ -128,24 +128,24 @@ class _AdvancedYearBoardingExampleScreenState
           final screenSize = MediaQuery.of(context).size;
           final availableWidth = constraints.maxWidth;
           final availableHeight = constraints.maxHeight;
-      
+
           final highlightBoxWidth =
               availableWidth * settings.highlightWidthFactor;
-      
+
           final textPathCenterOffset = _calculateHorizontalOffset(
               0.5, availableWidth, settings.pathCurveFactor);
           final stackCenter = availableWidth / 2;
           final highlightBoxCenter = stackCenter + textPathCenterOffset;
-      
+
           final highlightBoxLeft =
               highlightBoxCenter - (highlightBoxWidth / 1.5);
-      
+
           final patternScale = screenSize.shortestSide / 360.0;
           final patternWidth = (310 * patternScale).clamp(200.0, 400.0);
           final patternLeft = highlightBoxLeft - (patternWidth * 0.96);
           final patternTop = ((availableHeight * 0.70 - patternWidth) / 2) +
               availableHeight * 0.30;
-      
+
           return Stack(
             alignment: Alignment.topLeft,
             children: [
@@ -180,6 +180,7 @@ class _AdvancedYearBoardingExampleScreenState
                     controller: _scrollController,
                     settings: settings,
                     isInfinite: true,
+                    initialItem: _selectedYearIndex,
                     onSelectedItemChanged: (index) {
                       setState(() {
                         _selectedYearIndex = index;
