@@ -1,3 +1,8 @@
+## 1.1.1
+
+*   **CHORE**: Updated the `LICENSE` file to fully comply with OSI standards (MIT).
+    - This change ensures proper license recognition on pub.dev and improves package score.
+    
 ## 1.1.0
 
 *   **FEAT**: Added haptic feedback on item selection, controllable via `CurvedListWheelSettings`.
